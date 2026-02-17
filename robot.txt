@@ -1,0 +1,10 @@
+# Tools 24 Robots.txt - SEO Optimized
+User-agent: *
+Allow: /
+Allow: /public/
+
+Disallow: /uploads/
+Disallow: /output/
+Disallow: /node_modules/
+
+Sitemap: https://tools24.netlify.app/sitemap.xml
