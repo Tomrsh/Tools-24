@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR MASTER | Professional All-in-One QR Code Generator</title>
+    
+    <meta name="description" content="Free Professional QR Code Generator. Create UPI QR with amount, Link to QR, WiFi QR, and Text QR. High quality, custom colors, and instant download.">
+    <meta name="keywords" content="QR Code Generator, UPI QR Code with Amount, Free QR Maker, WhatsApp QR Generator, WiFi QR Code, Business QR Code, SEO Optimized QR Tool">
+    <meta name="author" content="QR Master">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { 
+            background-color: #0f172a; 
+            color: #f8fafc; 
+            font-family: 'Inter', sans-serif; 
+            scroll-behavior: smooth;
+        }
+        .glass-panel { 
+            background: rgba(30, 41, 59, 0.7); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(12px); 
+        }
+        .nav-tab.active {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+        .qr-output canvas, .qr-output img {
+            margin: 0 auto;
+            border-radius: 12px;
+            border: 8px solid white;
+        }
+        .input-style {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            width: 100%;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .input-style:focus { border-color: #3b82f6; }
+        
+        /* SEO Content Styling */
+        .seo-section h2 { color: #3b82f6; font-weight: 800; font-size: 1.5rem; margin-bottom: 1rem; }
+        .seo-section p { color: #94a3b8; line-height: 1.6; margin-bottom: 1rem; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <nav class="sticky top-0 z-50 glass-panel border-b border-white/5 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-black tracking-tighter uppercase">QR <span class="text-blue-500">MASTER</span></h1>
+            <div class="hidden md:flex gap-6 text-sm font-medium text-slate-400">
+                <a href="#generator" class="hover:text-blue-400">Generator</a>
+                <a href="#features" class="hover:text-blue-400">Features</a>
+                <a href="#about" class="hover:text-blue-400">How it works</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12">
+        
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-tight">Generate <span class="text-blue-500">Premium</span> QR Codes Instantly.</h2>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">UPI Payments, Website Links, WiFi access, or Secret Texts - Create everything in one professional tool.</p>
+        </div>
+
+        <div id="generator" class="grid lg:grid-cols-3 gap-8 items-start">
+            
+            <div class="lg:col-span-1 space-y-2">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Select Tool Type</p>
+                <button onclick="switchTab('link')" id="tab-link" class="nav-tab active w-full text-left p-4 rounded-2xl flex items-center gap-3 transition-all">
+                    <span>🔗</span> URL / Website Link
+                </button>
+                <button onclick="switchTab('upi')" id="tab-upi" class="nav-tab w-full text-left p-4 rounded-2xl flex items-center gap-3 transition-all">
+                    <span>💳</span> UPI Payment QR
+                </button>
+                <button onclick="switchTab('wifi')" id="tab-wifi" class="nav-tab w-full text-left p-4 rounded-2xl flex items-center gap-3 transition-all">
+                    <span>📶</span> WiFi Access
+                </button>
+                <button onclick="switchTab('text')" id="tab-text" class="nav-tab w-full text-left p-4 rounded-2xl flex items-center gap-3 transition-all">
+                    <span>📄</span> Plain Text / SMS
+                </button>
+            </div>
+
+            <div class="lg:col-span-1 glass-panel p-6 rounded-[2.5rem] shadow-xl">
+                <div id="input-fields" class="space-y-4">
+                    <div id="field-link" class="tool-field">
+                        <label class="block text-sm font-bold mb-2">Enter Website URL</label>
+                        <input type="text" id="url-input" class="input-style" placeholder="https://example.com" oninput="generateQR()">
+                    </div>
+
+                    <div id="field-upi" class="tool-field hidden space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">UPI ID (VPA)</label>
+                            <input type="text" id="upi-id" class="input-style" placeholder="example@oksbi" oninput="generateQR()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Payee Name</label>
+                            <input type="text" id="upi-name" class="input-style" placeholder="Enter Name" oninput="generateQR()">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Amount (Optional)</label>
+                                <input type="number" id="upi-amount" class="input-style" placeholder="0.00" oninput="generateQR()">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Message (Note)</label>
+                                <input type="text" id="upi-note" class="input-style" placeholder="Payment for..." oninput="generateQR()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="field-wifi" class="tool-field hidden space-y-4">
+                        <label class="block text-sm font-bold mb-2">Network Name (SSID)</label>
+                        <input type="text" id="wifi-ssid" class="input-style" placeholder="Home WiFi" oninput="generateQR()">
+                        <label class="block text-sm font-bold mb-2">Password</label>
+                        <input type="password" id="wifi-pass" class="input-style" placeholder="********" oninput="generateQR()">
+                    </div>
+
+                    <div id="field-text" class="tool-field hidden">
+                        <label class="block text-sm font-bold mb-2">Enter Your Text</label>
+                        <textarea id="text-input" class="input-style h-32" placeholder="Type secret message..." oninput="generateQR()"></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-white/10">
+                    <p class="text-xs text-slate-500 mb-4 uppercase font-bold">Customization</p>
+                    <div class="flex items-center justify-between">
+                        <span>QR Color</span>
+                        <input type="color" id="qr-color" value="#000000" onchange="generateQR()" class="bg-transparent cursor-pointer h-10 w-10">
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1 flex flex-col items-center">
+                <div class="glass-panel p-8 rounded-[2.5rem] w-full flex flex-col items-center justify-center">
+                    <div id="qrcode" class="qr-output mb-6 shadow-2xl"></div>
+                    <button onclick="downloadQR()" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-black text-sm tracking-widest flex items-center justify-center gap-3 transition-all active:scale-95">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        DOWNLOAD QR
+                    </button>
+                </div>
+                <p class="mt-4 text-[10px] text-slate-500 uppercase font-bold tracking-tighter">High Definition PNG Format</p>
+            </div>
+
+        </div>
+
+        <hr class="my-20 border-white/5">
+        
+        <div id="about" class="seo-section grid md:grid-cols-2 gap-12">
+            <div>
+                <h2>Professional UPI QR Code Generator</h2>
+                <p>Hamara tool special taur par Indian businesses ke liye design kiya gaya hai. Aap asani se customize UPI QR generate kar sakte hain jisme **Selected Amount** aur **Custom Payment Message** pehle se set ho sake. Isse payment process fast aur error-free ho jata hai.</p>
+                
+                <h2>Secure & Private QR Maker</h2>
+                <p>Hum privacy ko priority dete hain. Aapka data (like WiFi passwords ya UPI IDs) kisi server par save nahi hota. Sabhi QR codes aapke local browser mein generate hote hain, jo ise 100% safe banata hai.</p>
+            </div>
+            <div>
+                <h2>Why Choose QR Master?</h2>
+                <ul class="space-y-4 text-slate-400">
+                    <li class="flex gap-2">✅ <b class="text-slate-200">Instant HD Download:</b> Download high-quality PNGs.</li>
+                    <li class="flex gap-2">✅ <b class="text-slate-200">Mobile Friendly:</b> Fully responsive design for all devices.</li>
+                    <li class="flex gap-2">✅ <b class="text-slate-200">Zero Ads:</b> Clean interface with professional experience.</li>
+                    <li class="flex gap-2">✅ <b class="text-slate-200">Smart UPI:</b> Support for PhonePe, GPay, Paytm and more.</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-slate-900/50 py-10 mt-20 border-t border-white/5 text-center text-slate-500 text-sm">
+        <p>© 2026 QR MASTER - The Ultimate Professional QR Solution</p>
+    </footer>
+
+    <script>
+        let currentMode = 'link';
+        let qrInstance = null;
+
+        // Initialize QR on Load
+        window.onload = () => {
+            generateQR();
+        };
+
+        function switchTab(mode) {
+            currentMode = mode;
+            
+            // UI Toggle
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + mode).classList.add('active');
+            
+            document.querySelectorAll('.tool-field').forEach(f => f.classList.add('hidden'));
+            document.getElementById('field-' + mode).classList.remove('hidden');
+            
+            generateQR();
+        }
+
+        function generateQR() {
+            const qrContainer = document.getElementById("qrcode");
+            qrContainer.innerHTML = ""; // Clear old QR
+
+            let qrData = "";
+            const color = document.getElementById('qr-color').value;
+
+            if (currentMode === 'link') {
+                qrData = document.getElementById('url-input').value || "https://google.com";
+            } 
+            else if (currentMode === 'upi') {
+                const id = document.getElementById('upi-id').value || "example@upi";
+                const name = encodeURIComponent(document.getElementById('upi-name').value || "User");
+                const am = document.getElementById('upi-amount').value;
+                const note = encodeURIComponent(document.getElementById('upi-note').value || "Payment");
+                
+                // standard UPI URI format
+                qrData = `upi://pay?pa=${id}&pn=${name}${am ? '&am='+am : ''}&tn=${note}&cu=INR`;
+            }
+            else if (currentMode === 'wifi') {
+                const ssid = document.getElementById('wifi-ssid').value || "WiFi";
+                const pass = document.getElementById('wifi-pass').value || "";
+                qrData = `WIFI:T:WPA;S:${ssid};P:${pass};;`;
+            }
+            else if (currentMode === 'text') {
+                qrData = document.getElementById('text-input').value || "Hello World";
+            }
+
+            qrInstance = new QRCode(qrContainer, {
+                text: qrData,
+                width: 256,
+                height: 256,
+                colorDark: color,
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        function downloadQR() {
+            const img = document.querySelector('#qrcode img');
+            if (!img) return;
+            
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.download = `QR_Master_${Date.now()}.png`;
+            link.click();
+        }
+    </script>
+</body>
+</html>

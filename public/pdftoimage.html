@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Image Converter - High Quality PNG/JPG | Tools24</title>
+    
+    <meta name="description" content="Free premium PDF to Image converter. Convert your PDF files to high-quality PNG, JPG, or WebP formats securely in your browser. No server upload required.">
+    <meta name="keywords" content="PDF to Image, PDF to PNG converter, PDF to JPG high quality, extract pages from PDF free, secure PDF converter, offline PDF to image, bulk PDF to image, Tools24, PDF to WebP">
+    <meta name="author" content="Tools24">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); }
+        .dashed-box { border: 2px dashed rgba(255, 255, 255, 0.2); transition: all 0.3s ease; }
+        .dashed-box:hover { border-color: #3b82f6; background: rgba(59, 130, 246, 0.05); }
+        .btn-primary { background: linear-gradient(135deg, #2563eb, #3b82f6); transition: all 0.2s; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(59, 130, 246, 0.5); }
+        .btn-primary:active { transform: scale(0.95); }
+        
+        /* Custom Scrollbar for Preview Area */
+        .preview-scroll::-webkit-scrollbar { width: 8px; }
+        .preview-scroll::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); border-radius: 10px; }
+        .preview-scroll::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        
+        /* Loader Animation */
+        .loader { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #3b82f6; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <nav class="sticky top-0 z-50 glass-panel border-b border-white/5 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-black tracking-tighter uppercase">TOOLS<span class="text-blue-500">24</span></h1>
+            <div class="text-sm font-bold text-green-400 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> 100% Local Processing
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+        
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">PDF to <span class="text-blue-500">Image</span> Converter</h2>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">Extract pages from any PDF and convert them into high-quality PNG, JPG, or WebP images instantly.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-4 gap-6 items-start">
+            
+            <div class="lg:col-span-1 space-y-6">
+                <div class="glass-panel p-6 rounded-[2rem] shadow-xl">
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Output Settings</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-slate-300">Image Format</label>
+                            <select id="imageFormat" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-blue-500">
+                                <option value="image/png">PNG (Best Quality)</option>
+                                <option value="image/jpeg">JPG (Smaller Size)</option>
+                                <option value="image/webp">WebP (Modern Format)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-slate-300">Resolution Quality</label>
+                            <select id="imageQuality" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-blue-500">
+                                <option value="2.0">HD (High Definition 2x)</option>
+                                <option value="1.5">Standard (1.5x)</option>
+                                <option value="1.0">Normal (Web Optimized)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-[2rem] shadow-xl text-center">
+                    <input type="file" id="pdfInput" accept="application/pdf" class="hidden">
+                    <button onclick="document.getElementById('pdfInput').click()" class="w-full dashed-box rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer">
+                        <div class="bg-blue-600/20 p-4 rounded-full mb-3 text-blue-500">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        </div>
+                        <span class="font-bold text-sm">Select PDF File</span>
+                        <span class="text-xs text-slate-500 mt-1">Max speed via local RAM</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 glass-panel p-6 sm:p-8 rounded-[2rem] shadow-xl min-h-[500px] flex flex-col">
+                
+                <div id="emptyState" class="flex-grow flex flex-col items-center justify-center text-slate-500">
+                    <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    <p class="text-lg font-medium">Your converted images will appear here</p>
+                    <p class="text-sm">Upload a PDF to get started securely.</p>
+                </div>
+
+                <div id="loadingState" class="hidden flex-grow flex flex-col items-center justify-center text-blue-400">
+                    <div class="loader mb-4"></div>
+                    <p class="font-bold tracking-widest uppercase text-sm" id="loadingText">Processing PDF...</p>
+                </div>
+
+                <div id="resultState" class="hidden flex-col h-full">
+                    <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Generated Images</h3>
+                            <p class="text-xs text-slate-400">Total Pages: <span id="pageCount" class="text-blue-400 font-bold">0</span></p>
+                        </div>
+                        <button id="downloadZipBtn" class="btn-primary px-6 py-3 rounded-xl font-bold text-sm tracking-wide shadow-lg flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12"></path></svg>
+                            DOWNLOAD ALL (ZIP)
+                        </button>
+                    </div>
+
+                    <div class="preview-scroll overflow-y-auto pr-2 max-h-[60vh]">
+                        <div id="imageGrid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mt-24 pt-12 border-t border-white/10 text-slate-300 space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-black text-white mb-4">Best Professional PDF to Image Converter</h2>
+                <p class="text-lg text-slate-400 max-w-3xl mx-auto">Welcome to Tools24's premium utility. Easily extract pages and convert your PDF documents into high-resolution PNG, JPG, or WebP formats without compromising on quality or privacy.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10">
+                <div>
+                    <h3 class="text-xl font-bold text-blue-400 mb-3">100% Secure & Client-Side Processing</h3>
+                    <p class="mb-4 leading-relaxed text-sm">Most online converters upload your sensitive documents to their servers, posing a massive privacy risk. Tools24 is built differently. We use advanced <strong>client-side processing</strong> technology. When you select a PDF, it is processed entirely within your web browser using your device's memory. Your data never leaves your computer, making it the most secure PDF to Image tool on the internet.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold text-blue-400 mb-3">Multiple Output Varieties (PNG, JPG, WebP)</h3>
+                    <p class="mb-4 leading-relaxed text-sm">Whether you need a transparent, lossless <strong>PDF to PNG converter</strong> for graphic design, a lightweight <strong>PDF to JPG</strong> for email sharing, or next-gen WebP formats for website optimization, we have you covered. Use our intuitive settings panel to select your desired format and adjust the resolution up to HD (High Definition).</p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold text-blue-400 mb-3">Bulk Extraction & Zip Download</h3>
+                    <p class="mb-4 leading-relaxed text-sm">Converting a 50-page PDF? No problem. Our tool automatically processes multi-page documents seamlessly. Instead of downloading images one by one, you can click the "Download All (ZIP)" button. Our system will bundle all your high-quality extracted images into a single ZIP folder instantly.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold text-blue-400 mb-3">Mobile Friendly & Free to Use</h3>
+                    <p class="mb-4 leading-relaxed text-sm">Designed with a premium dark theme, Tools24 works perfectly on smartphones, tablets, and desktops. There are no hidden fees, no watermarks, and no sign-ups required. It's a fully responsive, professional-grade tool built for students, professionals, and creators.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Set worker path for PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        const pdfInput = document.getElementById('pdfInput');
+        const emptyState = document.getElementById('emptyState');
+        const loadingState = document.getElementById('loadingState');
+        const resultState = document.getElementById('resultState');
+        const imageGrid = document.getElementById('imageGrid');
+        const loadingText = document.getElementById('loadingText');
+        const downloadZipBtn = document.getElementById('downloadZipBtn');
+        const pageCountEl = document.getElementById('pageCount');
+
+        let generatedImages = []; // Store base64 data
+
+        pdfInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // UI Transitions
+            emptyState.classList.add('hidden');
+            resultState.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            loadingState.classList.add('flex');
+            imageGrid.innerHTML = '';
+            generatedImages = [];
+
+            const format = document.getElementById('imageFormat').value;
+            const qualityScale = parseFloat(document.getElementById('imageQuality').value);
+            const fileExtension = format.split('/')[1]; // png, jpeg, webp
+
+            try {
+                // Read PDF file as ArrayBuffer
+                const fileReader = new FileReader();
+                fileReader.onload = async function() {
+                    const typedarray = new Uint8Array(this.result);
+                    
+                    // Load PDF
+                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                    const totalPages = pdf.numPages;
+                    pageCountEl.innerText = totalPages;
+
+                    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+                        loadingText.innerText = `Processing Page ${pageNum} of ${totalPages}...`;
+                        
+                        const page = await pdf.getPage(pageNum);
+                        const viewport = page.getViewport({ scale: qualityScale });
+                        
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+
+                        // Fill white background for JPG (since canvas is transparent by default)
+                        if(format === 'image/jpeg') {
+                            ctx.fillStyle = "#ffffff";
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        }
+
+                        const renderContext = {
+                            canvasContext: ctx,
+                            viewport: viewport
+                        };
+
+                        await page.render(renderContext).promise;
+                        
+                        // Convert canvas to image data URL
+                        const imgData = canvas.toDataURL(format, 1.0); // 1.0 is max quality for jpeg/webp
+                        generatedImages.push({
+                            data: imgData,
+                            filename: `page_${pageNum}.${fileExtension}`
+                        });
+
+                        // Render in UI
+                        createPreviewCard(imgData, pageNum, fileExtension);
+                    }
+
+                    // Show Results
+                    loadingState.classList.add('hidden');
+                    loadingState.classList.remove('flex');
+                    resultState.classList.remove('hidden');
+                    resultState.classList.add('flex');
+                };
+                fileReader.readAsArrayBuffer(file);
+
+            } catch (error) {
+                console.error("Error converting PDF: ", error);
+                alert("An error occurred while processing the PDF.");
+                loadingState.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            }
+        });
+
+        // Function to create image card in the grid
+        function createPreviewCard(src, pageNum, ext) {
+            const div = document.createElement('div');
+            div.className = 'glass-panel p-2 rounded-xl text-center relative group';
+            div.innerHTML = `
+                <div class="overflow-hidden rounded-lg bg-white mb-2 aspect-[3/4] flex items-center justify-center">
+                    <img src="${src}" class="max-h-full max-w-full object-contain shadow-sm">
+                </div>
+                <div class="flex justify-between items-center px-1">
+                    <span class="text-xs font-bold text-slate-400">Page ${pageNum}</span>
+                    <a href="${src}" download="Page_${pageNum}.${ext}" class="text-xs bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2 py-1 rounded transition-colors font-bold">
+                        SAVE
+                    </a>
+                </div>
+            `;
+            imageGrid.appendChild(div);
+        }
+
+        // ZIP Download Logic
+        downloadZipBtn.addEventListener('click', () => {
+            if (generatedImages.length === 0) return;
+            
+            downloadZipBtn.innerHTML = `<div class="loader inline-block border-white border-t-transparent w-4 h-4"></div> ZIPPING...`;
+            
+            const zip = new JSZip();
+            const folderName = `Tools24_PDF_Images`;
+            const imgFolder = zip.folder(folderName);
+
+            generatedImages.forEach((img) => {
+                // Remove data URL prefix (e.g., "data:image/png;base64,")
+                const base64Data = img.data.split(',')[1];
+                imgFolder.file(img.filename, base64Data, { base64: true });
+            });
+
+            zip.generateAsync({ type: "blob" }).then(function(content) {
+                saveAs(content, `${folderName}.zip`);
+                downloadZipBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12"></path></svg> DOWNLOAD ALL (ZIP)`;
+            });
+        });
+    </script>
+</body>
+</html>

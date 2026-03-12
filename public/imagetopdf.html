@@ -1,117 +1,191 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to PDF Converter - Tools 24 | Free, Secure & Professional</title>
+    <title>Image to PDF Converter - High Quality, Free & Secure | Tools24</title>
     
-    <meta name="description" content="Tools 24: Sabse fast aur secure Image to PDF converter. JPG, PNG, WEBP ko PDF mein badlein. Best free online PDF tools for students and professionals. No limits, No watermark.">
-    <meta name="keywords" content="image to pdf, pdf24 alternative, convert jpg to pdf, tools 24, secure pdf converter, photo to pdf maker, merge images to pdf, best online pdf tools 2026, free pdf editor, crop image before pdf, high quality pdf converter">
+    <meta name="description" content="Tools24: The fastest and most secure Image to PDF converter. Convert JPG, PNG, and WebP to professional PDF documents instantly. 100% free, no watermark, local processing.">
+    <meta name="keywords" content="image to pdf, convert jpg to pdf online, free pdf maker, secure pdf converter, photo to pdf without watermark, tools24 pdf tool, merge images to pdf, client-side pdf generator 2026">
+    <meta name="author" content="Tools24 Hub">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        body { background: #0b0e14; color: #f8fafc; font-family: 'Inter', sans-serif; }
+        body { 
+            background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: smooth;
+        }
         
-        .premium-card { background: #111827; border: 1px solid #1f2937; border-radius: 20px; transition: 0.3s; }
-        .drop-zone { border: 2px dashed #374151; background: #0f172a; transition: 0.3s; cursor: pointer; }
-        .drop-zone:hover { border-color: #06b6d4; background: #161e2e; }
+        /* Premium UI Classes */
+        .glass-nav { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-panel { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); }
         
-        /* Grid Alignment */
-        .img-item { background: #1e293b; border-radius: 12px; padding: 8px; position: relative; }
-        .img-item img { border-radius: 8px; width: 100%; aspect-ratio: 1/1; object-fit: cover; cursor: grab; }
+        /* Drag & Drop Zone */
+        .dashed-box { border: 2px dashed rgba(255, 255, 255, 0.2); transition: all 0.3s ease; }
+        .dashed-box:hover, .dashed-box.dragover { border-color: #0ea5e9; background: rgba(14, 165, 233, 0.05); }
         
-        /* Tooltip style buttons */
-        .tool-btn { background: rgba(0,0,0,0.8); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.2s; }
-        .tool-btn:hover { transform: scale(1.1); background: #06b6d4; color: black; }
+        /* Buttons & Gradients */
+        .blue-gradient-text { background: linear-gradient(135deg, #38bdf8, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-cyan { background: linear-gradient(135deg, #0ea5e9, #0284c7); transition: all 0.2s; }
+        .btn-cyan:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(14, 165, 233, 0.5); }
+        .btn-cyan:active { transform: scale(0.95); }
 
-        .btn-cyan { background: #06b6d4; color: #000; font-weight: 800; border-radius: 12px; transition: 0.3s; }
-        .btn-cyan:hover { box-shadow: 0 0 20px rgba(6, 182, 212, 0.4); transform: translateY(-2px); }
+        /* Image Grid Styles */
+        .img-item { position: relative; border-radius: 16px; overflow: hidden; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.05); transition: transform 0.2s; cursor: grab; aspect-ratio: 1/1; }
+        .img-item:active { cursor: grabbing; transform: scale(0.98); }
+        .img-item img { width: 100%; height: 100%; object-fit: cover; }
         
-        #editorModal { background: rgba(0,0,0,0.98); }
-        .seo-section h2 { color: #06b6d4; font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
-        .seo-section p { color: #94a3b8; line-height: 1.8; margin-bottom: 1rem; }
+        /* Tooltip Buttons on Images */
+        .tool-btn { background: rgba(15, 23, 42, 0.9); color: #e2e8f0; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(4px); }
+        .tool-btn:hover { background: #0ea5e9; color: white; border-color: #0ea5e9; transform: scale(1.1); }
+        .tool-btn.delete-btn:hover { background: #ef4444; border-color: #ef4444; }
+
+        /* SEO Section Styles */
+        .seo-section h2 { color: #f8fafc; font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; margin-top: 2rem; }
+        .seo-section h3 { color: #38bdf8; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; margin-top: 1.5rem; }
+        .seo-section p { color: #94a3b8; line-height: 1.8; margin-bottom: 1.25rem; font-size: 1rem; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex flex-col">
 
-    <nav class="p-4 border-b border-gray-800 flex justify-between items-center sticky top-0 bg-black/80 backdrop-blur-md z-50">
-        <div class="flex items-center gap-2">
-            <span class="bg-cyan-500 text-black px-2 py-1 rounded font-black">24</span>
-            <span class="text-xl font-bold tracking-tight">TOOLS 24</span>
-        </div>
-        <div class="flex gap-4">
-            <a href="https://tools24.netlify.app" class="text-gray-400 hover:text-white text-sm font-medium">Home</a>
-            <a href="#" class="text-cyan-400 text-sm font-medium underline underline-offset-4">Image to PDF</a>
+    <nav class="sticky top-0 z-[50] glass-nav px-4 md:px-8 py-4 flex justify-between items-center shadow-sm">
+        <a href="/" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 bg-gradient-to-br from-sky-400 to-blue-600 rounded-xl flex items-center justify-center font-black text-white shadow-lg">24</div>
+            <span class="text-2xl font-black tracking-tighter hidden sm:inline">TOOLS<span class="text-sky-400">24</span></span>
+        </a>
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/50 border border-slate-700">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span class="text-xs font-bold text-slate-300">100% Secure Processing</span>
+            </div>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-6 py-12">
-        <div class="premium-card p-4 md:p-8">
+    <main class="container mx-auto px-4 sm:px-6 py-10 flex-grow relative z-10">
+        
+        <div class="max-w-6xl mx-auto glass-panel rounded-[2rem] p-6 sm:p-10 shadow-2xl">
+            
             <div class="text-center mb-10">
-                <h1 class="text-4xl font-extrabold mb-3">Image to <span class="text-cyan-500">PDF</span></h1>
-                <p class="text-gray-400">PDF24 style minimalist design. Fast, secure, and easy.</p>
+                <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">Image to <span class="blue-gradient-text">PDF Converter</span></h1>
+                <p class="text-slate-400 text-lg">Turn your JPG, PNG, or WebP images into a professional PDF document instantly. Drag, drop, edit, and generate securely.</p>
             </div>
 
-            <div id="dropZone" class="drop-zone py-16 rounded-3xl text-center mb-8">
+            <div id="dropZone" class="dashed-box py-20 rounded-[1.5rem] text-center mb-8 cursor-pointer flex flex-col items-center justify-center">
                 <input type="file" id="fileIn" multiple accept="image/*" class="hidden">
-                <i class="fa-solid fa-file-arrow-up text-5xl text-gray-600 mb-4"></i>
-                <p class="text-xl font-bold">Choose Images</p>
-                <p class="text-gray-500 text-sm">ya yahan drag karke drop karein</p>
-                <button onclick="document.getElementById('fileIn').click()" class="mt-6 bg-white text-black px-8 py-2.5 rounded-full font-bold">Files Select Karein</button>
+                <div class="w-20 h-20 bg-sky-500/10 rounded-full flex items-center justify-center mb-4 text-sky-400">
+                    <i class="fa-solid fa-file-image text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2 text-white">Upload Images Here</h3>
+                <p class="text-slate-500 text-sm mb-6">Drag & drop your files, or click to browse</p>
+                <button onclick="document.getElementById('fileIn').click()" class="btn-cyan px-8 py-3 rounded-xl font-bold text-sm tracking-widest text-white shadow-lg flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> SELECT FILES
+                </button>
             </div>
 
             <div id="workspace" class="hidden">
-                <div id="sortableGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 mb-10">
+                
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Arrange Pages</h3>
+                        <p class="text-xs text-slate-400">Drag images to reorder. Click pencil icon to crop/rotate.</p>
+                    </div>
+                    <button onclick="document.getElementById('fileIn').click()" class="text-xs font-bold text-sky-400 bg-sky-500/10 hover:bg-sky-500/20 px-4 py-2 rounded-lg transition-colors border border-sky-500/20">+ Add More</button>
+                </div>
+
+                <div id="sortableGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10 p-4 bg-slate-900/50 rounded-2xl border border-white/5 min-h-[200px]">
                     </div>
                 
-                <div class="flex flex-col md:flex-row gap-4 justify-center items-center border-t border-gray-800 pt-8">
-                    <button onclick="applyFilter('grayscale(1)')" class="bg-gray-800 text-gray-400 px-6 py-3 rounded-xl font-bold text-sm w-full md:w-auto">B&W Filter</button>
-                    <button id="makePdf" class="btn-cyan px-12 py-4 w-full md:w-auto text-sm flex items-center justify-center gap-3">
-                        GENERATE PDF <i class="fa-solid fa-chevron-right"></i>
+                <div class="flex flex-col md:flex-row gap-4 justify-between items-center border-t border-white/10 pt-8 mt-8">
+                    <div class="flex gap-3 w-full md:w-auto">
+                        <button onclick="applyFilter('grayscale(100%)')" class="flex-1 md:flex-none bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-xl font-bold text-sm border border-white/10 transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-sky-400"></i> B&W Filter
+                        </button>
+                        <button onclick="location.reload()" class="flex-1 md:flex-none bg-red-500/10 hover:bg-red-500/20 text-red-400 px-6 py-3 rounded-xl font-bold text-sm border border-red-500/20 transition-colors">
+                            Clear All
+                        </button>
+                    </div>
+                    
+                    <button id="makePdf" class="btn-cyan px-10 py-4 w-full md:w-auto rounded-xl text-sm font-black tracking-widest text-white shadow-xl flex items-center justify-center gap-3">
+                        GENERATE PDF <i class="fa-solid fa-arrow-right"></i>
                     </button>
-                    <button onclick="location.reload()" class="text-red-500 text-xs font-bold uppercase tracking-widest">Clear All</button>
                 </div>
             </div>
         </div>
-
-        <section class="seo-section mt-24 max-w-4xl mx-auto border-t border-gray-800 pt-16">
-            <h2>Fastest Online Image to PDF Converter - Tools 24</h2>
-            <p>Tools 24 is a premium utility platform designed to solve your daily digital problems. Our <strong>Image to PDF converter</strong> is inspired by the simplicity of PDF24 but powered by our signature high-speed processing engine. Whether you have JPEG, PNG, or WEBP images, you can turn them into a professional PDF document in just a few clicks.</p>
-
-            <h2>Privacy and Security: Why Tools 24 is 100% Safe?</h2>
-            <p>Security humari sabse badi priority hai. Unlike other websites, <strong>Tools 24 never uploads your files to a server</strong>. Conversion ka saara process aapke browser (Chrome, Safari, Firefox) ke andar hi hota hai. Iska matlab hai ki aapke documents hamesha aapke paas rehte hain aur koi bhi third party unhe nahi dekh sakti. Mobile users ke liye ye sabse secure tareeka hai apne assignments aur bills ko PDF banane ka.</p>
-
-            <h2>How to Arrange and Sort Images Before Creating PDF?</h2>
-            <p>Document ki sequence sahi hona bahut zaruri hai. Tools 24 aapko <strong>Drag and Drop</strong> sorting ki suvidha deta hai. Bas image ke thumbnails ko pakdein aur unhe apni zarurat ke hisab se aage-piche karein. Hamara smart interface ensure karta hai ki aapka workspace clean rahe aur aap bina kisi confusion ke kaam kar sakein.</p>
-
-            <h2>Professional Editing: Crop, Rotate & PDF Filters</h2>
-            <p>PDF banane se pehle aap har image ko edit kar sakte hain. Aap images ko crop karke unwanted margins hata sakte hain aur orientation sahi karne ke liye rotate kar sakte hain. Agar aapko sarkari documents (official papers) submit karne hain, toh aap ek click mein sabhi images par Black & White (Grayscale) filter apply kar sakte hain, jisse wo ek dum scan kiye huye documents jaise lagte hain.</p>
-        </section>
     </main>
 
-    <div id="editorModal" class="fixed inset-0 z-[100] hidden flex flex-col">
-        <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-black">
-            <span class="text-xs font-bold uppercase tracking-widest text-cyan-500">Image Studio</span>
-            <button onclick="closeEditor()" class="text-3xl text-gray-500">&times;</button>
+    <section class="glass-panel border-t border-white/5 py-20 px-6 mt-10">
+        <div class="max-w-5xl mx-auto seo-content">
+            
+            <div class="text-center mb-16">
+                <h2>The Best Free <span class="text-sky-400">Image to PDF Converter</span> in 2026</h2>
+                <p class="text-lg text-slate-400 max-w-3xl mx-auto">Welcome to Tools24, your ultimate destination for professional document management. Easily convert multiple JPG, PNG, and WebP images into a single, highly-optimized PDF file without any software installation.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3>100% Secure: Client-Side Processing</h3>
+                    <p>Security is our absolute priority. Unlike other popular alternatives, <strong>Tools24 never uploads your photos to a server</strong>. The entire Image to PDF conversion process happens locally inside your browser (Chrome, Safari, Edge). Your sensitive documents, assignments, and IDs remain strictly on your device, making this the most secure PDF maker available online.</p>
+                    
+                    <h3>Drag & Drop Reordering</h3>
+                    <p>Document sequence matters. Our smart workspace features an intuitive <strong>Drag and Drop</strong> sorting system. Simply click and drag the image thumbnails to arrange them in the exact order you want them to appear in your final PDF. It's fast, fluid, and designed for maximum productivity.</p>
+                </div>
+
+                <div>
+                    <h3>Advanced Image Studio (Crop & Rotate)</h3>
+                    <p>Don't want messy borders in your PDF? Click the edit (pencil) icon on any uploaded image to open our built-in <strong>Image Studio</strong>. Here, you can accurately crop out unwanted backgrounds and rotate images to fix orientation issues before generating the document.</p>
+
+                    <div class="glass-panel p-6 rounded-[1.5rem] bg-slate-900/50 mt-6 border-l-4 border-sky-400">
+                        <h3 class="!mt-0 !mb-2 text-white text-lg font-bold">Pro Feature: One-Click B&W Filter</h3>
+                        <p class="text-sm mb-0">Submitting official government documents or college assignments? Use our <strong>B&W Filter (Grayscale)</strong> button. It instantly applies a high-contrast black and white filter to all your images, giving them a clean, professional "scanned document" look.</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="flex-1 flex items-center justify-center p-6 overflow-hidden">
-            <div class="max-w-full max-h-[65vh] shadow-2xl">
-                <img id="eImg" src="" style="display: block; max-width: 100%;">
+    </section>
+
+    <footer class="py-8 text-center bg-[#0a0f1a] border-t border-white/5">
+        <p class="text-slate-600 text-[11px] uppercase tracking-widest font-bold">
+            &copy; 2026 Tools24. Built for Speed & Privacy.
+        </p>
+    </footer>
+
+    <div id="editorModal" class="fixed inset-0 z-[100] hidden bg-slate-950/95 backdrop-blur-md flex flex-col transition-opacity">
+        <div class="p-4 border-b border-white/10 flex justify-between items-center bg-slate-900">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-crop-simple text-sky-400"></i>
+                <span class="text-sm font-bold uppercase tracking-widest text-white">Image Studio</span>
+            </div>
+            <button onclick="closeEditor()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+        
+        <div class="flex-1 flex items-center justify-center p-4 md:p-8 overflow-hidden">
+            <div class="w-full max-w-4xl max-h-[70vh] shadow-2xl rounded-xl overflow-hidden bg-black flex items-center justify-center">
+                <img id="eImg" src="" class="max-h-full max-w-full block">
             </div>
         </div>
-        <div class="p-8 bg-gray-900 border-t border-gray-800 flex flex-col items-center">
-            <div class="flex gap-10 mb-8 text-2xl text-gray-500">
-                <button onclick="cropper.rotate(-90)" class="hover:text-white"><i class="fa-solid fa-rotate-left"></i></button>
-                <button onclick="cropper.rotate(90)" class="hover:text-white"><i class="fa-solid fa-rotate-right"></i></button>
+        
+        <div class="p-6 bg-slate-900 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center gap-6">
+            <div class="flex gap-4 bg-slate-800 p-2 rounded-xl border border-white/5">
+                <button onclick="cropper.rotate(-90)" class="w-12 h-12 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-700 hover:text-sky-400 transition-colors" title="Rotate Left">
+                    <i class="fa-solid fa-rotate-left text-xl"></i>
+                </button>
+                <button onclick="cropper.rotate(90)" class="w-12 h-12 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-700 hover:text-sky-400 transition-colors" title="Rotate Right">
+                    <i class="fa-solid fa-rotate-right text-xl"></i>
+                </button>
             </div>
-            <button onclick="saveEdit()" class="btn-cyan w-full max-w-md py-4">Sahi Hai, Save Karo</button>
+            <button onclick="saveEdit()" class="btn-cyan w-full sm:w-auto px-12 py-4 rounded-xl font-bold tracking-widest shadow-lg flex items-center gap-2">
+                <i class="fa-solid fa-check"></i> SAVE CHANGES
+            </button>
         </div>
     </div>
 
@@ -121,76 +195,147 @@
         const fileIn = document.getElementById('fileIn');
         const grid = document.getElementById('sortableGrid');
         const workspace = document.getElementById('workspace');
+        const dropZone = document.getElementById('dropZone');
 
-        // Smooth Reordering
-        new Sortable(grid, { animation: 300, ghostClass: 'opacity-0' });
+        // Smooth Reordering Setup
+        new Sortable(grid, { 
+            animation: 300, 
+            ghostClass: 'opacity-0',
+            dragClass: 'scale-105',
+            delay: 50, // Slight delay for mobile scroll compatibility
+            delayOnTouchOnly: true
+        });
 
-        fileIn.onchange = (e) => {
-            const files = Array.from(e.target.files);
-            if(files.length > 0) {
+        // Drag and Drop Visuals
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('dragover'); });
+        dropZone.addEventListener('drop', (e) => { 
+            e.preventDefault(); 
+            dropZone.classList.remove('dragover'); 
+            handleFiles(e.dataTransfer.files); 
+        });
+        fileIn.onchange = (e) => handleFiles(e.target.files);
+
+        function handleFiles(files) {
+            const fileArray = Array.from(files);
+            if(fileArray.length > 0) {
                 workspace.classList.remove('hidden');
-                document.getElementById('dropZone').classList.add('hidden');
+                dropZone.classList.add('hidden');
             }
-            files.forEach(f => {
+            fileArray.forEach(f => {
+                if(!f.type.startsWith('image/')) return;
                 const r = new FileReader();
-                r.onload = (ev) => add(ev.target.result);
+                r.onload = (ev) => addImageToGrid(ev.target.result);
                 r.readAsDataURL(f);
             });
-        };
+        }
 
-        function add(src) {
+        function addImageToGrid(src) {
             const div = document.createElement('div');
-            div.className = "img-item group";
+            div.className = "img-item group shadow-lg";
             div.innerHTML = `
                 <img src="${src}" class="m-img">
-                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-3 transition">
-                    <button onclick="openEditor(this)" class="tool-btn"><i class="fa-solid fa-pencil"></i></button>
-                    <button onclick="this.closest('.img-item').remove(); check();" class="tool-btn hover:!bg-red-500"><i class="fa-solid fa-trash text-xs"></i></button>
+                <div class="absolute inset-0 bg-slate-900/70 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-3 transition-opacity duration-200 backdrop-blur-sm">
+                    <button onclick="openEditor(this)" class="tool-btn shadow-lg" title="Crop/Edit">
+                        <i class="fa-solid fa-crop-simple"></i>
+                    </button>
+                    <button onclick="removeImage(this)" class="tool-btn delete-btn shadow-lg" title="Delete">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                 </div>
             `;
             grid.appendChild(div);
         }
 
-        function check() { if(grid.children.length === 0) location.reload(); }
+        function removeImage(btn) {
+            btn.closest('.img-item').remove();
+            if(grid.children.length === 0) location.reload();
+        }
 
+        // Cropper Logic
         function openEditor(btn) {
             current = btn.closest('.img-item').querySelector('.m-img');
             document.getElementById('eImg').src = current.src;
             document.getElementById('editorModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            
             if(cropper) cropper.destroy();
-            setTimeout(() => { cropper = new Cropper(document.getElementById('eImg'), { viewMode: 1, background: false }); }, 200);
+            setTimeout(() => { 
+                cropper = new Cropper(document.getElementById('eImg'), { 
+                    viewMode: 1, 
+                    background: false,
+                    autoCropArea: 1
+                }); 
+            }, 100);
         }
 
-        function closeEditor() { document.getElementById('editorModal').classList.add('hidden'); }
+        function closeEditor() { 
+            document.getElementById('editorModal').classList.add('hidden'); 
+            document.body.style.overflow = 'auto';
+        }
 
         function saveEdit() {
-            current.src = cropper.getCroppedCanvas({ maxWidth: 2000 }).toDataURL('image/jpeg', 0.9);
+            if(!cropper) return;
+            // Get cropped canvas and update source
+            current.src = cropper.getCroppedCanvas({ maxWidth: 2000, maxHeight: 2000 }).toDataURL('image/jpeg', 0.9);
             closeEditor();
         }
 
-        function applyFilter(f) { document.querySelectorAll('.m-img').forEach(i => i.style.filter = f); }
+        function applyFilter(f) { 
+            document.querySelectorAll('.m-img').forEach(i => i.style.filter = f); 
+        }
 
+        // PDF Generation Logic
         document.getElementById('makePdf').onclick = async function() {
-            this.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> GENERATING...`;
-            const pdf = new jsPDF('p', 'mm', 'a4');
             const imgs = document.querySelectorAll('.m-img');
+            if(imgs.length === 0) return alert("Please add images first!");
 
-            for (let i = 0; i < imgs.length; i++) {
-                if (i > 0) pdf.addPage();
-                const cvs = document.createElement('canvas');
-                cvs.width = imgs[i].naturalWidth; cvs.height = imgs[i].naturalHeight;
-                const ctx = cvs.getContext('2d');
-                ctx.filter = window.getComputedStyle(imgs[i]).filter;
-                ctx.drawImage(imgs[i], 0, 0);
+            const originalText = this.innerHTML;
+            this.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> GENERATING PDF...`;
+            this.classList.add('opacity-75', 'cursor-not-allowed');
 
-                const pw = 210, ph = 297;
-                const ratio = cvs.width / cvs.height;
-                let w = pw - 20, h = w / ratio;
-                if (h > ph - 20) { h = ph - 20; w = h * ratio; }
-                pdf.addImage(cvs.toDataURL('image/jpeg', 0.8), 'JPEG', (pw-w)/2, (ph-h)/2, w, h);
+            try {
+                // p = portrait, mm = millimeters, a4 = page size
+                const pdf = new jsPDF('p', 'mm', 'a4'); 
+
+                for (let i = 0; i < imgs.length; i++) {
+                    if (i > 0) pdf.addPage();
+                    
+                    const cvs = document.createElement('canvas');
+                    cvs.width = imgs[i].naturalWidth; 
+                    cvs.height = imgs[i].naturalHeight;
+                    const ctx = cvs.getContext('2d');
+                    
+                    // Apply CSS filters (like grayscale) to the actual canvas data
+                    ctx.filter = window.getComputedStyle(imgs[i]).filter;
+                    ctx.drawImage(imgs[i], 0, 0);
+
+                    const imgData = cvs.toDataURL('image/jpeg', 0.85);
+
+                    // A4 Dimensions in mm
+                    const pw = 210, ph = 297; 
+                    const ratio = cvs.width / cvs.height;
+                    let w = pw - 20, h = w / ratio; // 10mm margin on each side
+
+                    if (h > ph - 20) { 
+                        h = ph - 20; 
+                        w = h * ratio; 
+                    }
+                    
+                    // Center the image
+                    const x = (pw - w) / 2;
+                    const y = (ph - h) / 2;
+                    
+                    pdf.addImage(imgData, 'JPEG', x, y, w, h);
+                }
+                pdf.save(`Tools24_ImageToPDF_${Date.now()}.pdf`);
+            } catch (error) {
+                console.error(error);
+                alert("An error occurred while generating PDF.");
             }
-            pdf.save(`Tools24_${Date.now()}.pdf`);
-            this.innerHTML = `GENERATE PDF <i class="fa-solid fa-chevron-right"></i>`;
+
+            this.innerHTML = originalText;
+            this.classList.remove('opacity-75', 'cursor-not-allowed');
         };
     </script>
 </body>

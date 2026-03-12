@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Resizer & Compressor | High Quality, Free & Secure - Tools24</title>
+    
+    <meta name="description" content="Free online Image Resizer and Compressor by Tools24. Resize photos, reduce file size in KB/MB, change dimensions, and convert to WebP, JPG, PNG securely. 100% local processing.">
+    <meta name="keywords" content="image resizer online free, compress photo without losing quality, resize image to kb, secure client-side photo editor, webp converter, change image dimensions, Tools24 resizer, reduce image size fast">
+    <meta name="author" content="Tools24 Hub">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: smooth; 
+        }
+        .glass-nav { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-panel { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); }
+        .dashed-box { border: 2px dashed rgba(255, 255, 255, 0.2); transition: all 0.3s ease; }
+        .dashed-box:hover, .dashed-box.dragover { border-color: #a855f7; background: rgba(168, 85, 247, 0.05); }
+        .input-box { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: 0.3s; }
+        .input-box:focus { border-color: #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); outline: none; }
+        .btn-purple { background: linear-gradient(135deg, #9333ea, #a855f7); transition: all 0.2s; }
+        .btn-purple:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(168, 85, 247, 0.5); }
+        .btn-purple:active { transform: scale(0.95); }
+        
+        /* Custom Range Slider */
+        input[type=range] { -webkit-appearance: none; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #a855f7; cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px rgba(168,85,247,0.5); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.1); border-radius: 2px; }
+        
+        /* Checkbox Toggle */
+        .toggle-checkbox:checked { right: 0; border-color: #a855f7; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #a855f7; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="sticky top-0 z-[100] glass-nav px-4 md:px-8 py-4 flex justify-between items-center shadow-sm">
+        <a href="/" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-fuchsia-400 rounded-xl flex items-center justify-center font-black text-white shadow-lg">24</div>
+            <span class="text-2xl font-black tracking-tighter hidden sm:inline">TOOLS<span class="text-purple-400">24</span></span>
+        </a>
+        <div class="text-sm font-bold text-green-400 flex items-center gap-2 bg-green-400/10 px-4 py-2 rounded-full border border-green-400/20">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Offline Ready
+        </div>
+    </nav>
+
+    <header class="py-12 text-center px-6 relative">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/20 blur-[100px] rounded-full z-0 pointer-events-none"></div>
+        <div class="relative z-10 max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">Smart Image <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-500">Resizer</span></h1>
+            <p class="text-slate-400 text-lg">Fastest way to resize, compress, and convert your photos securely in your browser. No server uploads.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 pb-20 relative z-10 flex-grow">
+        
+        <div class="max-w-5xl mx-auto glass-panel rounded-[2rem] p-6 sm:p-8 shadow-2xl">
+            
+            <div id="uploadArea" class="dashed-box rounded-[1.5rem] py-20 flex flex-col items-center justify-center cursor-pointer text-center">
+                <input type="file" id="imageInput" accept="image/*" class="hidden">
+                <div class="w-20 h-20 bg-purple-500/10 rounded-full flex items-center justify-center mb-4 text-purple-400">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2 text-white">Upload or Drop Image</h3>
+                <p class="text-slate-500 text-sm">Supports JPG, PNG, WEBP, GIF (Locally processed)</p>
+                <button onclick="document.getElementById('imageInput').click()" class="mt-6 btn-purple px-8 py-3 rounded-xl font-bold text-sm tracking-widest text-white shadow-lg">
+                    SELECT PHOTO
+                </button>
+            </div>
+
+            <div id="editorArea" class="hidden grid lg:grid-cols-2 gap-8">
+                
+                <div class="flex flex-col items-center justify-center bg-slate-900/50 rounded-2xl p-4 border border-white/5 relative group">
+                    <p class="absolute top-3 left-3 text-xs font-bold text-slate-500 uppercase tracking-widest bg-slate-900 px-3 py-1 rounded-full">Live Preview</p>
+                    <div class="flex-grow flex items-center justify-center p-8 w-full">
+                        <img id="imagePreview" class="max-w-full max-h-[300px] object-contain rounded-lg shadow-lg">
+                    </div>
+                    
+                    <div class="w-full grid grid-cols-2 gap-4 mt-4 text-center">
+                        <div class="bg-slate-800 rounded-xl p-3 border border-white/5">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Original Size</p>
+                            <p id="originalDimensions" class="text-sm font-semibold text-white">0 x 0</p>
+                        </div>
+                        <div class="bg-purple-900/30 rounded-xl p-3 border border-purple-500/30">
+                            <p class="text-[10px] text-purple-300 uppercase font-bold mb-1">New Size</p>
+                            <p id="newDimensions" class="text-sm font-semibold text-purple-400">0 x 0</p>
+                        </div>
+                    </div>
+
+                    <button id="downloadBtn" class="w-full mt-4 btn-purple py-4 rounded-xl font-black text-sm tracking-widest text-white flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-download"></i> DOWNLOAD RESIZED IMAGE
+                    </button>
+                    <button onclick="resetTool()" class="mt-3 text-xs font-bold text-slate-500 hover:text-white transition-colors">Choose Another Image</button>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold text-white border-b border-white/10 pb-3">Dimensions & Settings</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Width (px)</label>
+                            <input type="number" id="widthInput" class="w-full input-box rounded-xl p-3 font-semibold text-lg" oninput="updateDimensions('w')">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Height (px)</label>
+                            <input type="number" id="heightInput" class="w-full input-box rounded-xl p-3 font-semibold text-lg" oninput="updateDimensions('h')">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between bg-slate-800/50 p-4 rounded-xl border border-white/5">
+                        <div>
+                            <p class="font-bold text-sm text-white">Lock Aspect Ratio</p>
+                            <p class="text-xs text-slate-500">Keep image proportions exact</p>
+                        </div>
+                        <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" name="toggle" id="ratioLock" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out border-slate-600"/>
+                            <label for="ratioLock" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-600 cursor-pointer transition-colors duration-200 ease-in-out"></label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Export Format</label>
+                        <select id="formatInput" class="w-full input-box rounded-xl p-3 font-semibold appearance-none" onchange="generateResizedImage()">
+                            <option value="image/jpeg">JPG (Best for photos)</option>
+                            <option value="image/png">PNG (Best for transparency)</option>
+                            <option value="image/webp">WebP (Best for web & compression)</option>
+                        </select>
+                    </div>
+
+                    <div id="qualityControl">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest">Image Quality</label>
+                            <span id="qualityValue" class="text-xs font-bold text-purple-400 bg-purple-500/20 px-2 py-1 rounded">90%</span>
+                        </div>
+                        <input type="range" id="qualityInput" min="0.1" max="1.0" step="0.1" value="0.9" class="w-full" oninput="updateQualityDisplay()" onchange="generateResizedImage()">
+                        <p class="text-[10px] text-slate-500 mt-2 text-right">Lower quality = Smaller file size (KB)</p>
+                    </div>
+
+                </div>
+            </div>
+            <canvas id="canvas" class="hidden"></canvas>
+        </div>
+
+    </main>
+
+    <section class="glass-panel border-t border-white/5 py-20 px-6">
+        <div class="max-w-5xl mx-auto seo-content">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-white mb-4">The Best Free <span class="text-purple-400">Online Image Resizer</span></h2>
+                <p class="text-lg text-slate-400 max-w-3xl mx-auto">Welcome to Tools24's premium photo utility. Whether you need to compress a photo for a website, resize an image to specific pixel dimensions, or convert formats securely, our tool does it all instantly without losing quality.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-xl font-bold text-purple-400 mb-3">Resize Image Without Losing Quality</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm mb-6">Our <strong>free online image resizer</strong> uses advanced HTML5 canvas algorithms to maintain crisp details while scaling your photos up or down. With the built-in "Lock Aspect Ratio" feature, you never have to worry about stretched or distorted pictures. Just enter your desired width or height, and the tool mathematically calculates the perfect proportions.</p>
+                    
+                    <h3 class="text-xl font-bold text-purple-400 mb-3">Compress Photo to KB / Reduce File Size</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">Large image files slow down websites and consume too much storage. Using our interactive <strong>image compression slider</strong>, you can easily reduce your photo's file size. Drop the quality slightly to convert a massive 5MB photo into a web-optimized 200KB file in milliseconds. Perfect for SEO optimization and faster page loading speeds.</p>
+                </div>
+
+                <div>
+                    <div class="glass-panel p-8 rounded-[2rem] bg-slate-900/50">
+                        <h3 class="!mt-0 text-white text-lg font-bold mb-4">Why Tools24 is the Ultimate Choice:</h3>
+                        <ul class="space-y-3 text-sm text-slate-300">
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-shield-check text-green-400 mt-1"></i> <b>100% Secure & Private:</b> Your photos are processed locally on your device's browser. We never upload your images to any cloud server.</li>
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-bolt text-yellow-400 mt-1"></i> <b>Instant WebP Conversion:</b> Easily convert old JPG/PNG files to the ultra-lightweight next-gen WebP format.</li>
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-ban text-red-400 mt-1"></i> <b>Zero Watermarks:</b> Complete freedom. We don't add logos or watermarks to your downloaded files.</li>
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen text-blue-400 mt-1"></i> <b>Mobile Friendly:</b> Works flawlessly on Android, iOS, and PC without any app installation.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center border-t border-white/5 pt-12">
+                <p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Trending Searches 2026</p>
+                <p class="mt-2 text-sm text-slate-400">Change image resolution, compress JPG to 100kb, Free photo dimensions editor, transparent PNG resizer, secure client-side editor, Tools24 premium utilities.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-8 text-center bg-[#0a0f1a] border-t border-white/5 mt-auto">
+        <p class="text-slate-600 text-[11px] uppercase tracking-widest font-bold">
+            &copy; 2026 Tools24 Hub. Secure. Private. Fast.
+        </p>
+    </footer>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const editorArea = document.getElementById('editorArea');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const widthInput = document.getElementById('widthInput');
+        const heightInput = document.getElementById('heightInput');
+        const ratioLock = document.getElementById('ratioLock');
+        const formatInput = document.getElementById('formatInput');
+        const qualityInput = document.getElementById('qualityInput');
+        const qualityControl = document.getElementById('qualityControl');
+        const qualityValue = document.getElementById('qualityValue');
+        const originalDimensions = document.getElementById('originalDimensions');
+        const newDimensions = document.getElementById('newDimensions');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let originalImage = new Image();
+        let aspectRatio = 1;
+        let finalDataUrl = '';
+        let originalFileName = 'image';
+
+        // Drag & Drop Setup
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+        uploadArea.addEventListener('dragleave', () => { uploadArea.classList.remove('dragover'); });
+        uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+        imageInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+            const file = files[0];
+            
+            originalFileName = file.name.split('.')[0]; // Get name without extension
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                originalImage.src = event.target.result;
+                originalImage.onload = () => {
+                    // Setup initial state
+                    aspectRatio = originalImage.width / originalImage.height;
+                    widthInput.value = originalImage.width;
+                    heightInput.value = originalImage.height;
+                    originalDimensions.innerText = `${originalImage.width} x ${originalImage.height}`;
+                    
+                    // Switch UI
+                    uploadArea.classList.add('hidden');
+                    editorArea.classList.remove('hidden');
+                    editorArea.classList.add('grid');
+                    
+                    generateResizedImage();
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // Logic for dimension calculation
+        function updateDimensions(changed) {
+            let w = parseInt(widthInput.value) || 0;
+            let h = parseInt(heightInput.value) || 0;
+
+            if (ratioLock.checked) {
+                if (changed === 'w') {
+                    heightInput.value = Math.round(w / aspectRatio);
+                } else if (changed === 'h') {
+                    widthInput.value = Math.round(h * aspectRatio);
+                }
+            }
+            generateResizedImage();
+        }
+
+        // Update quality text display
+        function updateQualityDisplay() {
+            qualityValue.innerText = Math.round(qualityInput.value * 100) + '%';
+        }
+
+        // Hide quality slider if format is PNG (PNG is lossless)
+        formatInput.addEventListener('change', () => {
+            if(formatInput.value === 'image/png') {
+                qualityControl.style.opacity = '0.4';
+                qualityInput.disabled = true;
+            } else {
+                qualityControl.style.opacity = '1';
+                qualityInput.disabled = false;
+            }
+        });
+
+        // Generate the new image on Canvas
+        function generateResizedImage() {
+            const w = parseInt(widthInput.value) || originalImage.width;
+            const h = parseInt(heightInput.value) || originalImage.height;
+            const format = formatInput.value;
+            const quality = parseFloat(qualityInput.value);
+
+            // Update UI
+            newDimensions.innerText = `${w} x ${h}`;
+
+            // Draw to canvas
+            canvas.width = w;
+            canvas.height = h;
+            
+            // Handle transparent backgrounds for JPG
+            if (format === 'image/jpeg') {
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, w, h);
+            }
+            
+            ctx.drawImage(originalImage, 0, 0, w, h);
+
+            // Export
+            finalDataUrl = canvas.toDataURL(format, quality);
+            imagePreview.src = finalDataUrl;
+        }
+
+        // Download Action
+        downloadBtn.addEventListener('click', () => {
+            if(!finalDataUrl) return;
+            const ext = formatInput.value.split('/')[1]; // jpeg, png, webp
+            const a = document.createElement('a');
+            a.href = finalDataUrl;
+            a.download = `Tools24_${originalFileName}_Resized.${ext}`;
+            a.click();
+        });
+
+        // Reset Tool
+        function resetTool() {
+            imageInput.value = '';
+            editorArea.classList.add('hidden');
+            editorArea.classList.remove('grid');
+            uploadArea.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
