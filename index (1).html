@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/IMG_20260216_094535.png">
+    <meta name="google-site-verification" content="Oo3XY4FoaLs-0QeZkbS29rxLhymIKImhD1BX33HjVZA" />
+    <title>Tools24 | Premium Free Online Web Tools & Converters</title>
+    
+    <meta name="description" content="Tools24 is the ultimate hub for premium, free online web tools. Use our Image to PDF converter, secure QR Code Generator, and PDF to Image extractor. 100% secure, no server uploads, no watermarks, and entirely free.">
+    <meta name="keywords" content="Tools24, free online tools, image to PDF converter, premium QR code generator, PDF to PNG image extractor, secure offline web tools, no watermark PDF maker, compress image online, fast browser utilities 2026">
+    <meta name="author" content="Tools24 Hub">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            background-color: #0f172a; 
+            color: #f8fafc; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Premium Glass Theme */
+        .glass-nav { 
+            background: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(16px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+        }
+        .glass-panel { 
+            background: rgba(30, 41, 59, 0.5); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(12px); 
+        }
+        
+        /* Gradients & Text */
+        .blue-gradient-text { 
+            background: linear-gradient(135deg, #3b82f6, #06b6d4); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        /* Search Box */
+        .nav-search { 
+            background: rgba(15, 23, 42, 0.6); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            transition: all 0.3s ease; 
+        }
+        .nav-search:focus-within { 
+            border-color: #3b82f6; 
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); 
+            background: rgba(30, 41, 59, 0.8);
+        }
+
+        /* Tool Cards */
+        .tool-card { 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            position: relative;
+            overflow: hidden;
+        }
+        .tool-card::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-25deg); transition: 0.5s;
+        }
+        .tool-card:hover::before { left: 150%; }
+        .tool-card:hover { 
+            transform: translateY(-8px); 
+            border-color: #3b82f6; 
+            box-shadow: 0 20px 40px -15px rgba(59, 130, 246, 0.3); 
+            background: rgba(30, 41, 59, 0.8);
+        }
+        
+        /* Dropdown */
+        .dropdown-menu { 
+            display: none; position: absolute; right: 0; top: 110%; width: 220px; 
+            background: #0f172a; border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
+            z-index: 200; transform-origin: top right;
+        }
+        .dropdown-item { 
+            padding: 14px 20px; font-size: 14px; font-weight: 600; color: #94a3b8; 
+            transition: 0.2s; display: flex; align-items: center; gap: 12px; 
+        }
+        .dropdown-item:hover { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .show { display: block !important; animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        
+        /* SEO Content Styling */
+        .seo-content h2 { color: #f8fafc; font-size: 2rem; font-weight: 800; margin-bottom: 1rem; margin-top: 2.5rem; }
+        .seo-content h3 { color: #3b82f6; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; margin-top: 2rem; }
+        .seo-content p { color: #94a3b8; line-height: 1.8; margin-bottom: 1.25rem; font-size: 1.05rem; }
+        .seo-content ul { list-style-type: none; padding-left: 0; margin-bottom: 1.5rem; }
+        .seo-content li { color: #cbd5e1; margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+        .seo-content li::before { content: "✓"; color: #3b82f6; position: absolute; left: 0; font-weight: bold; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="sticky top-0 z-[100] glass-nav px-4 md:px-8 py-4 flex justify-between items-center gap-4 shadow-sm">
+        <a href="/" class="flex items-center gap-3 shrink-0 group">
+            <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center font-black text-slate-900 shadow-lg group-hover:scale-105 transition-transform">
+                24
+            </div>
+            <span class="text-2xl font-black tracking-tighter hidden sm:inline">TOOLS<span class="text-blue-500">24</span></span>
+        </a>
+
+        <div class="nav-search flex items-center px-5 py-2.5 rounded-2xl flex-1 md:max-w-md">
+            <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
+            <input type="text" id="toolSearch" onkeyup="filterTools()" placeholder="Search PDF, QR, Image tools..." 
+            class="bg-transparent w-full pl-3 outline-none text-sm font-medium text-white placeholder:text-slate-500">
+        </div>
+
+        <div class="relative shrink-0">
+            <button id="menuBtn" class="w-12 h-12 flex items-center justify-center rounded-2xl hover:bg-slate-800 transition-colors border border-transparent hover:border-slate-700">
+                <i class="fa-solid fa-bars-staggered text-slate-300 text-xl"></i>
+            </button>
+            <div id="dropdown" class="dropdown-menu">
+                <div class="p-4 border-b border-slate-800">
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Legal & Support</p>
+                </div>
+                <a href="public/privacy-policy.html" class="dropdown-item">
+                    <i class="fa-solid fa-shield-halved text-lg"></i> Privacy Policy
+                </a>
+                <a href="public/terms.html" class="dropdown-item">
+                    <i class="fa-solid fa-file-contract text-lg"></i> Terms of Use
+                </a>
+                <a href="public/contact-us.html" class="dropdown-item">
+                    <i class="fa-solid fa-envelope-open-text text-lg"></i> Contact Us
+                </a>
+                <div class="p-3 text-[10px] text-slate-600 font-bold uppercase tracking-widest text-center bg-slate-900/50">
+                    Version 2.0 • Secure
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-16 md:py-24 text-center px-6 relative overflow-hidden flex-shrink-0">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600/20 blur-[100px] rounded-full z-0 pointer-events-none"></div>
+        
+        <div class="relative z-10 max-w-3xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel text-xs font-bold text-blue-400 mb-6 border-blue-500/30">
+                <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                100% SECURE LOCAL PROCESSING
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight leading-tight">
+                Premium Online <br><span class="blue-gradient-text">Web Tools Hub</span>
+            </h1>
+            <p class="text-slate-400 text-lg md:text-xl leading-relaxed">
+                Experience ultra-fast, private, and high-quality utilities. No watermarks, no registrations, and absolutely zero server uploads.
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-6 pb-20 relative z-10 flex-grow">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="toolGrid">
+            
+            <a href="public/exam-resizer.html" class="tool-card glass-panel p-8 rounded-[2rem] relative group border border-white/5 hover:border-amber-500/50 transition-all duration-300" data-name="exam photo signature resizer 20kb 50kb vyapam pet govt forms">
+    <div class="absolute top-4 right-4 bg-amber-600/20 text-amber-400 border border-amber-500/30 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest animate-pulse">Hot</div>
+    
+    <div class="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center mb-6 border border-amber-500/20 group-hover:scale-110 transition-transform">
+        <i class="fa-solid fa-user-graduate text-2xl text-amber-500"></i>
+    </div>
+    
+    <h3 class="text-xl font-bold mb-3 text-white">Exam Photo Resizer</h3>
+    <p class="text-sm text-slate-400 leading-relaxed">Resize photo & signature strictly under 20KB/50KB for CG PET, Vyapam & Govt Exams.</p>
+    
+    <div class="mt-4 flex items-center gap-2 text-[10px] font-black text-amber-500/80 uppercase tracking-tighter">
+        <span><i class="fa-solid fa-check-circle"></i> 20KB Ready</span>
+        <span><i class="fa-solid fa-check-circle"></i> 50KB Ready</span>
+    </div>
+</a>
+
+            
+            <a href="public/imagetopdf.html" class="tool-card glass-panel p-8 rounded-[2rem]" data-name="image to pdf converter jpg png photo document">
+                <div class="w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-6 border border-orange-500/20">
+                    <i class="fa-solid fa-file-pdf text-2xl text-orange-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-white">Image to PDF</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">Convert your JPG, PNG photos into highly professional PDF documents securely.</p>
+            </a>
+
+            <a href="public/qrcode.html" class="tool-card glass-panel p-8 rounded-[2rem]" data-name="qr code generator scanner upi wifi text link custom">
+                <div class="absolute top-4 right-4 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Popular</div>
+                <div class="w-14 h-14 bg-cyan-500/10 rounded-2xl flex items-center justify-center mb-6 border border-cyan-500/20">
+                    <i class="fa-solid fa-qrcode text-2xl text-cyan-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-white">QR Generator</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">Create custom, high-definition QR codes for UPI, WiFi, and Links with zero watermarks.</p>
+            </a>
+
+            <a href="public/pdftoimage.html" class="tool-card glass-panel p-8 rounded-[2rem]" data-name="pdf to image extract jpg png webp high quality converter">
+                <div class="w-14 h-14 bg-green-500/10 rounded-2xl flex items-center justify-center mb-6 border border-green-500/20">
+                    <i class="fa-solid fa-images text-2xl text-green-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-white">PDF to Image</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">Extract crystal clear images (PNG, JPG, WebP) from any PDF file locally.</p>
+            </a>
+
+            <a href="public/image-resizer.html" class="tool-card glass-panel p-8 rounded-[2rem]" data-name="image resizer crop compress web optimization size reduce">
+                <div class="absolute top-4 right-4 bg-purple-600/20 text-purple-400 border border-purple-500/30 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">New</div>
+                <div class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 border border-purple-500/20">
+                    <i class="fa-solid fa-compress text-2xl text-purple-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-white">Image Resizer</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">Fast resize, compress, and optimize your images for flawless web performance.</p>
+            </a>
+
+        </div>
+
+        <div id="noResults" class="hidden text-center py-20">
+            <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-ghost text-3xl text-slate-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">No tools found!</h3>
+            <p class="text-slate-500">Bhai, ye tool abhi available nahi hai. Try another keyword.</p>
+        </div>
+    </main>
+
+    <section class="glass-panel border-t border-white/5 py-20 px-6 mt-10">
+        <div class="max-w-5xl mx-auto seo-content">
+            
+            <div class="text-center mb-16">
+                <h2 class="text-4xl">Tools24: The Ultimate <span class="text-blue-500">Free Online Tools</span> Platform</h2>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto">Welcome to the most advanced, secure, and user-friendly web utilities hub on the internet. Whether you are a student, a professional designer, or a business owner, Tools24 provides everything you need to manage your digital files effortlessly.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3>100% Secure & Private Local Processing</h3>
+                    <p>Unlike traditional online converters that upload your private documents to third-party servers, Tools24 operates entirely on <strong>client-side processing architecture</strong>. This means when you use our <strong>Image to PDF converter</strong> or extract pages using our <strong>PDF to Image</strong> tool, all processing happens strictly inside your device's memory (RAM). Your sensitive data, financial UPI IDs, and personal photos never leave your browser, ensuring military-grade privacy.</p>
+                    
+                    <h3>Premium Tools with Zero Watermarks</h3>
+                    <p>We believe that high-quality utilities should be accessible to everyone. Every tool on Tools24 is completely free to use without requiring user registration or a premium subscription. You can generate custom <strong>UPI QR codes with amount</strong>, download high-definition PNGs, and merge PDFs without worrying about annoying watermarks ruining your professional documents.</p>
+                </div>
+
+                <div>
+                    <div class="glass-panel p-8 rounded-[2rem] bg-slate-900/50">
+                        <h3 class="!mt-0 text-white">Why Choose Tools24?</h3>
+                        <p class="text-sm">Our platform is heavily optimized with modern features that beat standard web tools:</p>
+                        <ul>
+                            <li><strong>Instant Speed:</strong> Powered by WebAssembly and local JS rendering.</li>
+                            <li><strong>Mobile Friendly UI:</strong> Flawless experience on Android, iOS, and Tablets.</li>
+                            <li><strong>Format Variety:</strong> Support for JPG, PNG, WebP, and high-quality PDF.</li>
+                            <li><strong>No File Size Limits:</strong> Process large files without server timeouts.</li>
+                            <li><strong>Ad-Free Experience:</strong> A clean, distraction-free premium dark mode interface.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center border-t border-white/5 pt-12">
+                <h3>Trending Utilities in 2026</h3>
+                <p class="max-w-4xl mx-auto text-sm">People across the globe trust Tools24 for their daily tasks. Our most searched tools include the <strong>Free Custom QR Code Maker</strong> for businesses, the offline-capable <strong>Photo to PDF app</strong>, and the blazing-fast <strong>Image Compressor</strong>. By utilizing modern web technologies like Tailwind CSS and HTML5 Canvas, we guarantee an application-like experience directly from your web browser. Bookmark Tools24 today and never search for another converter again.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="py-8 text-center bg-[#0a0f1a] border-t border-white/5 mt-auto">
+        <div class="flex justify-center gap-6 mb-4">
+            <a href="public/privacy-policy.html" class="text-xs text-slate-500 hover:text-blue-400 font-semibold transition-colors">Privacy</a>
+            <a href="public/terms.html" class="text-xs text-slate-500 hover:text-blue-400 font-semibold transition-colors">Terms</a>
+            <a href="public/contact-us.html" class="text-xs text-slate-500 hover:text-blue-400 font-semibold transition-colors">Contact</a>
+        </div>
+        <p class="text-slate-600 text-[11px] uppercase tracking-widest font-bold">
+            &copy; 2026 Tools24. Developed with <i class="fa-solid fa-heart text-blue-500 mx-1"></i> & Privacy First.
+        </p>
+    </footer>
+
+    <script>
+        // 3-Dots Menu Toggle Logic
+        const menuBtn = document.getElementById('menuBtn');
+        const dropdown = document.getElementById('dropdown');
+
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target) && !menuBtn.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Smart Search Filter
+        function filterTools() {
+            let input = document.getElementById('toolSearch').value.toLowerCase();
+            let cards = document.getElementsByClassName('tool-card');
+            let hasMatches = false;
+
+            for (let i = 0; i < cards.length; i++) {
+                let name = cards[i].getAttribute('data-name');
+                if (name.includes(input)) {
+                    cards[i].style.display = "block";
+                    hasMatches = true;
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+            document.getElementById('noResults').className = hasMatches ? "hidden" : "block";
+            document.getElementById('toolGrid').style.display = hasMatches ? "grid" : "none";
+        }
+    </script>
+</body>
+</html>
