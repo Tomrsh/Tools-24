@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Photo & Signature Resizer (Under 20KB/50KB) | Tools24</title>
+    
+    <meta name="description" content="Tools24: Best online tool to resize photo and signature for CG PET, Vyapam, and Govt Exams. Compress images strictly under 20KB, 50KB, or 100KB for online forms.">
+    <meta name="keywords" content="photo resizer for exam form, signature compressor under 20kb, cg pet photo size reduction, 50kb image converter, vyapam photo resizer, online form image editor tools24">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background: #0f172a; color: #f1f5f9; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .accent-border { border-left: 4px solid #38bdf8; }
+    </style>
+</head>
+<body class="min-h-screen py-10 px-4">
+
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl md:text-5xl font-black mb-4">Exam <span class="text-sky-400">Photo Resizer</span></h1>
+            <p class="text-slate-400">Specially designed for CG PET, Vyapam & Board Exam Forms</p>
+        </div>
+
+        <div class="glass rounded-3xl p-6 md:p-10 shadow-2xl">
+            <div id="uploadBox" class="border-2 border-dashed border-slate-600 rounded-2xl py-12 text-center cursor-pointer hover:border-sky-500 transition-all">
+                <input type="file" id="imageInput" accept="image/*" class="hidden">
+                <i class="fa-solid fa-cloud-upload text-5xl text-sky-500 mb-4"></i>
+                <h2 class="text-xl font-bold">Photo ya Signature Select Karein</h2>
+                <button onclick="document.getElementById('imageInput').click()" class="mt-4 bg-sky-600 hover:bg-sky-500 px-8 py-3 rounded-full font-black text-sm uppercase tracking-wider transition-all">Choose File</button>
+            </div>
+
+            <div id="editor" class="hidden mt-10">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="flex flex-col items-center justify-center bg-black/40 rounded-2xl p-4 border border-white/5">
+                        <p class="text-xs font-bold text-slate-500 mb-2 uppercase">Live Preview</p>
+                        <img id="previewImg" class="max-w-full max-h-64 rounded shadow-lg">
+                        <p id="sizeLabel" class="mt-4 text-sky-400 font-bold"></p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="accent-border pl-4">
+                            <label class="block text-sm font-bold text-slate-300 mb-2">Target File Size (Max):</label>
+                            <select id="targetSize" class="w-full bg-slate-800 border border-slate-700 p-3 rounded-xl focus:outline-none focus:border-sky-500">
+                                <option value="20">Under 20 KB (Best for Signature)</option>
+                                <option value="50" selected>Under 50 KB (Best for Photos)</option>
+                                <option value="100">Under 100 KB</option>
+                                <option value="200">Under 200 KB</option>
+                            </select>
+                        </div>
+
+                        <div class="accent-border pl-4">
+                            <label class="block text-sm font-bold text-slate-300 mb-2">Compression Quality: <span id="qVal">80</span>%</label>
+                            <input type="range" id="qualityRange" min="10" max="100" value="80" class="w-full accent-sky-500">
+                            <p class="text-[10px] text-slate-500 mt-1">Note: Quality kam karne se file size chhota hoga.</p>
+                        </div>
+
+                        <button id="downloadBtn" class="w-full bg-white text-black font-black py-4 rounded-xl hover:bg-sky-400 transition-all flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-download"></i> DOWNLOAD RESIZED IMAGE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-20 border-t border-white/10 pt-10">
+            <h2 class="text-2xl font-bold mb-6 text-sky-400">Why use Tools24 for Exam Form Resizing?</h2>
+            <div class="grid md:grid-cols-2 gap-8 text-slate-400 leading-relaxed">
+                <p>Sarkari exams jaise <strong>CG Vyapam</strong> ya <strong>PET 2026</strong> mein aksar photo size 50KB se kam aur signature 20KB se kam manga jata hai. Tools24 ka ye tool bina quality loss ke compression karta hai taaki aapka form reject na ho.</p>
+                <p>Humari technology <strong>Client-Side Processing</strong> par chalti hai, iska matlab aapki personal photos hamare server par kabhi upload nahi hoti. Sab kuch aapke mobile ke andar hi hota hai, jo ki 100% secure hai.</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const previewImg = document.getElementById('previewImg');
+        const editor = document.getElementById('editor');
+        const uploadBox = document.getElementById('uploadBox');
+        const sizeLabel = document.getElementById('sizeLabel');
+        const qualityRange = document.getElementById('qualityRange');
+        const qValLabel = document.getElementById('qVal');
+        const targetSizeSelect = document.getElementById('targetSize');
+        
+        let originalImage = new Image();
+
+        imageInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    originalImage.src = event.target.result;
+                    originalImage.onload = () => {
+                        uploadBox.classList.add('hidden');
+                        editor.classList.remove('hidden');
+                        processImage();
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        qualityRange.oninput = (e) => {
+            qValLabel.innerText = e.target.value;
+            processImage();
+        };
+
+        targetSizeSelect.onchange = () => processImage();
+
+        function processImage() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set dimensions
+            canvas.width = originalImage.width;
+            canvas.height = originalImage.height;
+            ctx.drawImage(originalImage, 0, 0);
+
+            const targetKB = parseInt(targetSizeSelect.value);
+            let quality = parseInt(qualityRange.value) / 100;
+            
+            let dataUrl = canvas.toDataURL('image/jpeg', quality);
+            
+            // Update preview and size info
+            previewImg.src = dataUrl;
+            const sizeInKB = (dataUrl.length * (3/4) / 1024).toFixed(2);
+            sizeLabel.innerText = `Current Size: ${sizeInKB} KB`;
+
+            if (sizeInKB > targetKB) {
+                sizeLabel.classList.add('text-red-500');
+                sizeLabel.classList.remove('text-sky-400');
+                sizeLabel.innerText += " (Limit se zyada hai!)";
+            } else {
+                sizeLabel.classList.remove('text-red-500');
+                sizeLabel.classList.add('text-green-400');
+                sizeLabel.innerText += " (Perfect!)";
+            }
+        }
+
+        document.getElementById('downloadBtn').onclick = () => {
+            const link = document.createElement('a');
+            link.download = `Tools24_Exam_Photo_${Date.now()}.jpg`;
+            link.href = previewImg.src;
+            link.click();
+        };
+    </script>
+</body>
+</html>
